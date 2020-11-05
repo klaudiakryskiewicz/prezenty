@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="jumbotron">
+        <h5>{{ header }} </h5>
+
+    <form method="post" >
+
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" class="btn btn-success" value="zatwierdź">
+
+    </form>
+    </div>
+{% endblock %}

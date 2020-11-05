@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron form-group">
+
+    <form method="post">{% csrf_token %}
+    <p>{{ question }} {{ name }}?</p>
+        <input type="hidden" name="id" value={{ object.id }}>
+    <input type="submit" class="btn btn-success" value="Tak">
+        <button onclick="window.history.back();" class="btn btn-success" type="button">Nie</button>
+
+    </form>
+    </div>
+{% endblock %}

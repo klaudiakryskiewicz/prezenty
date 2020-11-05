@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for member in members %}
+    <table class="table">
+    <thead>
+    <tr><th colspan="6" style="background-color: antiquewhite; text-align: center; font-size: 20px">{{ member.name }}</th></tr>
+    {% if member.no_of_free_wishes is 0 %}
+        <tr><th>Nie ma już wolnych życzeń :( Daj znać {{ member.name }}, żeby coś dodał!</th></tr>
+        {% else %}
+
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Życzenie</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Link</th>
+        <th scope="col">Zarezerwuj!</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        {% for object in member.wishes.all %}
+            {% if not object.is_booked %}
+            <tr>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col">{{ object.name }}</th>
+                <th scope="col">{% if object.description %}{{ object.description }}{% endif %}</th>
+                <th scope="col">{% if object.link %}<a target="_blank" rel="noopener noreferrer" href="http://{{ object.link }}">Link</a>{% endif %}</th>
+                <th scope="col"><form method="post" action="/book-wish/">{% csrf_token %}<input name="wish_id" type="hidden" value="{{ object.id }}">
+                    <input type="submit" class="btn btn-success" value="Rezerwuję!"></form></th>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+
+             </tbody>
+    </table>
+    {% endfor %}
+    <br>
+    <div style="background-color: sandybrown; height: 50px; text-align: center; padding: 8px 0; font-size: 22px">Dla tych członków rodziny wybrałeś już prezent, chcesz zarezerwować coś jeszcze? ;)</div>
+    {% for member in members_done %}
+
+    <table class="table">
+    <thead>
+    <tr><th colspan="6" style="background-color: antiquewhite; text-align: center; font-size: 20px">{{ member.name }}</th></tr>
+    {% if member.no_of_free_wishes is 0 %}
+        <tr><th>Nie ma już wolnych życzeń :( Daj znać, żeby {{ member.name }} coś dodał!</th></tr>
+        {% else %}
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Życzenie</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Link</th>
+        <th scope="col">Zarezerwuj!</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        {% for object in member.wishes.all %}
+            {% if not object.is_booked %}
+            <tr>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col">{{ object.name }}</th>
+                <th scope="col">{% if object.description %}{{ object.description }}{% endif %}</th>
+                <th scope="col">{% if object.link %}<a target="_blank" rel="noopener noreferrer" href="http://{{ object.link }}">Link</a>{% endif %}</th>
+                <th scope="col"><form method="post" action="/book-wish/">{% csrf_token %}<input name="wish_id" type="hidden" value="{{ object.id }}">
+                    <input type="submit" class="btn btn-success" value="Rezerwuję!"></form></th>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+
+             </tbody>
+    </table>
+    {% endfor %}
+{% endblock %}

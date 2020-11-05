@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if objects %}
+    <table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Imię</th>
+        <th scope="col">Życzenie</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Link</th>
+        <th scope="col">Kupione?</th>
+        <th scope="col"></th>
+        <th scope="col">Zmieniłeś zdanie?</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+            <tr {% if object.is_bought %} style="text-decoration:line-through; font-style:italic" {% endif %}>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col" >{{ object.wish.member.name }}</th>
+                <th scope="col">{{ object.wish.name }}</th>
+                <th scope="col">{% if object.wish.description %}{{ object.wish.description }}{% endif %}</th>
+                <th scope="col">{% if object.wish.link %}<a target="_blank" rel="noopener noreferrer" href="http://{{ object.wish.link }}">Link</a>{% endif %}</th>
+                <th scope="col">{% if object.is_bought %} Tak! {% else %} Jeszcze nie :( {% endif %}</th>
+                <th scope="col"><form method="post" action="/buy-present/">
+                    {% csrf_token %}<input name="present_id" type="hidden" value="{{ object.id }}">
+                    <input type="submit" class="btn btn-success"
+                            {% if not object.is_bought %} value="Kupione!"
+                            {% else %} value="Dopiero kupię!" {% endif %}></form>
+                </th>
+                <th scope="col"><form method="get" action="/delete-present/">
+                    {% csrf_token %}<input name="present_id" type="hidden" value="{{ object.id }}">
+                    <input type="submit" class="btn btn-success" value="Usuń prezent"></form></th>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    {% else %}
+    <div class="jumbotron">
+    Nie wybrałeś jeszcze żadnych prezentów :(
+    </div>
+    {% endif %}
+{% endblock %}

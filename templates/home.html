@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% block content %}
+    <div class="jumbotron">
+    <h4>Cześć!</h4>
+    <div>Przedstawiam Ci owoc mojej nauki i pracy przez ostatnie pół roku :)
+        To mój pierwszy samodzielny projekt, więc proszę o wyrozumiałość i sugestie, jak mogę go dla Ciebie ulepszyć ;)</div>
+    <br>
+    <div>Pozwól, że wytłumaczę, jak się nim posługiwać :) <br> <br>
+        <h5>Instrukcja</h5>
+        <ol>
+            <li>Stworzyłeś już swojego użytkownika - super!</li>
+            <li>Jeśli chcesz dodawać życzenia również dla innych członków rodziny, stwórz ich <a href="/add-member">tutaj</a> (chodzi przede wszystkim o Twoje dzieci, jeśli same nie korzystają z komputera :)</li>
+            <li>Teraz możesz zacząć dodawać swoje życzenia! Możesz zrobić to <a href="/add-wish">tutaj</a>. Pamiętaj, żeby wybrać czyje to życzenie ;)</li>
+            <li>Żeby zarezerwować życzenia pozostałych członków rodziny, kliknij <a href="/wish-list">tutaj</a>. Na górze listy zobaczysz osoby, dla których nie wybrałeś jeszcze prezentu.</li>
+            <li>Swoimi życzeniami (i życzeniami członków, których kontrolujesz) możesz zarządzać <a href="/my-wish-list">tutaj</a> - pamiętaj, że usunąć lub edytować swoje życzenie możesz tylko zanim ktoś inny je zarezerwuje!</li>
+            <li><a href="/present-list">Tutaj</a> znajdziesz listę życzeń, które zarezerwowałeś. Możesz też zaznaczyć, które udało Ci się już kupić, a które jeszcze są przed Tobą!</li>
+            <li>Monitoruj nie bieżąco listę swoich wolnych życzeń, i pamiętaj żeby dodać kolejne, jeśli wszystkie zostaną zarezerwowane!</li>
+            <li>Jeśli chcesz zaprosić kolejnych członków swojej rodziny, po prostu wyślij im ten link: <span style="color: saddlebrown">{{ request.build_absolute_uri }}accounts/signup/family/{% get_family_id request %}</span></li>
+        </ol>
+    </div>
+    </div>
+
+    <div class="jumbotron">
+        <h5>Liczba wolnych życzeń:</h5>
+    <ul>
+        {% for member in members %}
+            <li>{{ member.name }}: {{ member.no_of_free_wishes }} {% if member.no_of_free_wishes is 0 %} <h5 style="color: saddlebrown"><a href="/add-wish">Koniecznie coś dodaj!</a></h5> {% endif %}</li>
+        {% endfor %}
+    </ul>
+
+    </div>
+
+{% endblock %}
