@@ -95,11 +95,12 @@ class AddMainMemberView(LoginRequiredMixin, View):
         form = MemberForm(request.POST)
         obj = form.save(commit=False)
         obj.user = request.user
-        family = get_family(self.request)
+        family = Family.objects.get(id=id)
         if Member.objects.filter(name=obj.name, family=family).exists():
             error = "Taki użytkownik istnieje"
             return render(request, 'form.html', {'form': form, 'id': id, 'header':error})
         obj.main_member = True
+        obj.family=family
         obj.save()
         return redirect('/')
 
